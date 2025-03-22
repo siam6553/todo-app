@@ -1,110 +1,160 @@
-import React, { useState } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App by Raiyan</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f2f2f2;
+        }
 
-function TodoApp() {
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState("");
+        header {
+            background-color: indigo;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+        }
 
-  const handleAddTask = () => {
-    if (newTask.trim()) {
-      setTasks([...tasks, { text: newTask, completed: false }]);
-      setNewTask("");
-    }
-  };
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-  const handleToggleTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].completed = !updatedTasks[index].completed;
-    setTasks(updatedTasks);
-  };
+        .todo-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
 
-  const handleDeleteTask = (index) => {
-    setTasks(tasks.filter((_, i) => i !== index));
-  };
+        .todo-container h2 {
+            margin-bottom: 20px;
+        }
 
-  return (
-    <div
-      style={{
-        textAlign: "center",
-        fontFamily: "Arial",
-        margin: "20px",
-        backgroundColor: "#f0f8ff",
-        padding: "20px",
-        borderRadius: "10px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-      }}
-    >
-      <h1 style={{ color: "#4caf50" }}>To-Do App</h1>
-      <div>
-        <input
-          type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          placeholder="Add a new task"
-          style={{
-            padding: "10px",
-            width: "200px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-            marginRight: "10px",
-          }}
-        />
-        <button
-          onClick={handleAddTask}
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#4caf50",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          Add
-        </button>
-      </div>
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {tasks.map((task, index) => (
-          <li
-            key={index}
-            style={{
-              margin: "10px 0",
-              padding: "10px",
-              backgroundColor: "#fff3cd",
-              borderRadius: "5px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <span
-              onClick={() => handleToggleTask(index)}
-              style={{
-                textDecoration: task.completed ? "line-through" : "none",
-                cursor: "pointer",
-                color: task.completed ? "gray" : "black",
-              }}
-            >
-              {task.text}
-            </span>
-            <button
-              style={{
-                marginLeft: "10px",
-                color: "white",
-                backgroundColor: "#f44336",
-                border: "none",
-                borderRadius: "5px",
-                padding: "5px 10px",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDeleteTask(index)}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
 
-export default TodoApp;
+        button {
+            padding: 10px 15px;
+            background-color: indigo;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        button:hover {
+            background-color: #4b0082;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        ul li {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        ul li span {
+            flex: 1;
+        }
+
+        ul li button {
+            background-color: crimson;
+            font-size: 12px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #eee;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        My To-Do App
+    </header>
+
+    <main>
+        <div class="todo-container">
+            <h2>To-Do List</h2>
+            <input type="text" id="taskInput" placeholder="Enter a task">
+            <button onclick="addTask()">Add</button>
+            <ul id="taskList"></ul>
+        </div>
+    </main>
+
+    <footer>
+        This App is made with love by Raiyan
+    </footer>
+
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+
+            if (taskText === '') {
+                alert('Please enter a task!');
+                return;
+            }
+
+            const li = document.createElement('li');
+
+            const span = document.createElement('span');
+            span.innerText = taskText;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Delete';
+            deleteButton.onclick = function() {
+                li.remove();
+            };
+
+            li.appendChild(span);
+            li.appendChild(deleteButton);
+
+            document.getElementById('taskList').appendChild(li);
+
+            taskInput.value = '';
+        }
+
+        // Allow adding task by pressing "Enter"
+        document.getElementById('taskInput').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                addTask();
+            }
+        });
+    </script>
+
+</body>
+</html>
